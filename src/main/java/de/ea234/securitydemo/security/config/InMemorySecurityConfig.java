@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.context.annotation.Profile;
 
 /**
  * Spring Security mit InMemoryUserDetailsManager.
@@ -21,15 +22,18 @@ import org.springframework.security.web.SecurityFilterChain;
  * Demonstriert die einfachste Form der
  * benutzerdefinierten Authentifizierung.
  */
+
 @Configuration
+@Profile("inmemory")
 public class InMemorySecurityConfig {
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
-
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception 
+    {
         http
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/security/test/admin")
+                    .hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form.permitAll())
