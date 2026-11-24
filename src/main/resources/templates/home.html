@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SecurityDemoBE</title>
+</head>
+<body>
+
+    <h1>SecurityDemoBE</h1>
+
+    <h2>Spring Security</h2>
+
+    <p>
+        Anmeldung erfolgreich.
+    </p>
+
+    <p>
+        Angemeldeter Benutzer:
+        <strong th:text="${username}"></strong>
+    </p>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Abmelden</button>
+    </form>
+
+</body>
+</html>
