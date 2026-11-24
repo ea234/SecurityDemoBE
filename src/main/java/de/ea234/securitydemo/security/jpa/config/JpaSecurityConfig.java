@@ -1,0 +1,51 @@
+package de.ea234.securitydemo.security.jpa.config;
+
+import de.ea234.securitydemo.security.user.service.JpaUserDetailsService;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@Profile("jpa")
+public class JpaSecurityConfig {
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+
+        http
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/security/test/admin")
+                    .hasRole("ADMIN")
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form.permitAll())
+            .logout(logout -> logout.permitAll());
+
+        return http.build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    DaoAuthenticationProvider authenticationProvider(
+            JpaUserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
+
+        DaoAuthenticationProvider provider =
+            new DaoAuthenticationProvider(userDetailsService);
+
+        provider.setPasswordEncoder(passwordEncoder);
+
+        return provider;
+    }
+}
