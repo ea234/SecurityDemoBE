@@ -99,6 +99,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Spring Security OAuth2 Client / OpenID Connect -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
         <!-- Thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

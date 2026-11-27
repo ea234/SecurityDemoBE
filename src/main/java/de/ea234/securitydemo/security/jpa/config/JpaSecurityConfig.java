@@ -1,6 +1,8 @@
+
 package de.ea234.securitydemo.security.jpa.config;
 
 import de.ea234.securitydemo.security.user.service.JpaUserDetailsService;
+import de.ea234.securitydemo.security.oauth2.config.OAuth2SecurityConfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +11,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,19 +21,22 @@ import org.springframework.security.web.SecurityFilterChain;
 public class JpaSecurityConfig {
 
     @Bean
-    @Order ( 1 )
-    SecurityFilterChain h2( HttpSecurity http ) throws Exception
-    {
-      http.securityMatcher( "/h2/**" ).csrf( csrf -> csrf.ignoringRequestMatchers( "/h2/**" ) )
-                                      .headers( h -> h.frameOptions( f -> f.sameOrigin() ) )
-                                      .authorizeHttpRequests( auth -> auth.anyRequest().permitAll() );
-  
-      return http.build();
+    @Order(1)
+    SecurityFilterChain h2(HttpSecurity http) throws Exception {
+
+        http.securityMatcher("/h2/**")
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2/**"))
+            .headers(h -> h.frameOptions(f -> f.sameOrigin()))
+            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+
+        return http.build();
     }
 
     @Bean
-    @Order ( 2 )
-    SecurityFilterChain securityFilterChain(HttpSecurity http)
+    @Order(2)
+    SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            OAuth2SecurityConfig oauth2SecurityConfig)
             throws Exception {
 
         http
@@ -43,6 +47,8 @@ public class JpaSecurityConfig {
             )
             .formLogin(form -> form.permitAll())
             .logout(logout -> logout.permitAll());
+
+        oauth2SecurityConfig.configure(http);
 
         return http.build();
     }
@@ -64,19 +70,11 @@ public class JpaSecurityConfig {
 
         return provider;
     }
-    
+
     @Bean
-    public AuthenticationManager authenticationManager(
+    AuthenticationManager authenticationManager(
             DaoAuthenticationProvider authenticationProvider) {
 
         return new ProviderManager(authenticationProvider);
-    }    
-    
-//    @Bean
-//    public AuthenticationManager authenticationManager(
-//            AuthenticationConfiguration configuration)
-//            throws Exception {
-//
-//        return configuration.getAuthenticationManager();
-//    }
+    }
 }

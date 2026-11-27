@@ -1,0 +1,111 @@
+
+{
+  "realm": "SecurityDemo",
+  "enabled": true,
+  "displayName": "SecurityDemo",
+
+  "roles": {
+    "realm": [
+      {
+        "name": "ADMIN",
+        "description": "Administrator"
+      },
+      {
+        "name": "USER",
+        "description": "Standardbenutzer"
+      }
+    ]
+  },
+
+  "clients": [
+    {
+      "clientId": "securitydemo-be",
+      "name": "SecurityDemo Backend",
+      "description": "Spring Boot Backend",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "clientAuthenticatorType": "client-secret",
+      "secret": "VGAjxXgfVZ1f7yhCs508rGzQtMGt4ufoEFSUIAQi7wVyMM6Uu6ulB0QsX0Kv593H7Epr30JVRMs4mVJnFVoSbF",
+
+      "publicClient": false,
+      "bearerOnly": false,
+      "consentRequired": false,
+
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "authorizationServicesEnabled": false,
+
+      "rootUrl": "http://localhost:8080",
+      "baseUrl": "http://localhost:8080",
+
+      "redirectUris": [
+        "http://localhost:8080/login/oauth2/code/keycloak"
+      ],
+
+      "webOrigins": [
+        "http://localhost:8080"
+      ],
+
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:8080/*"
+      }
+    }
+  ],
+
+  "users": [
+      {
+        "username": "admin",
+        "enabled": true,
+        "email": "admin@example.com",
+        "emailVerified": true,
+        "firstName": "Max",
+        "lastName": "Mustermann",
+        "credentials": [
+          {
+            "type": "password",
+            "value": "admin",
+            "temporary": false
+          }
+        ],
+        "realmRoles": [
+          "ADMIN"
+        ],
+        "attributes": {
+          "department": [
+            "Administration"
+          ],
+          "userType": [
+            "Administrator"
+          ]
+        }
+      },
+      {
+        "username": "user",
+        "enabled": true,
+        "email": "user@example.com",
+        "emailVerified": true,
+        "firstName": "Erika",
+        "lastName": "Musterfrau",
+        "credentials": [
+          {
+            "type": "password",
+            "value": "user",
+            "temporary": false
+          }
+        ],
+        "realmRoles": [
+          "USER"
+        ],
+        "attributes": {
+          "department": [
+            "Entwicklung"
+          ],
+          "userType": [
+            "Standardbenutzer"
+          ]
+        }
+      }
+    ]
+  }
